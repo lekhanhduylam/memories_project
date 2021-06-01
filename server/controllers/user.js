@@ -12,7 +12,7 @@ export const signin = async (req, res) => {
         if (!existingUser)
             return res.status(404).json({ message: "User don't exist." })
 
-        const isPasswordCorrect = await bcrypt.compare(password, existingUser)
+        const isPasswordCorrect = await bcrypt.compare(password, existingUser.password)
 
         if (!isPasswordCorrect)
             return res.status(400).json({ message: "Invalid credentials." })
@@ -22,16 +22,14 @@ export const signin = async (req, res) => {
         res.status(200).json({ result: existingUser, token })
 
     } catch (error) {
-        res.status(500).json({ message: 'Something when wrong.' })
+        res.status(500).json({ message: 'Something when wrong.', error: error.message })
     }
 }
 
 export const signup = async (req, res) => {
     const { email, password, firstName, lastName, confirmPassword } = req.body
-
     try {
-        const existingUser = User.findOne({ email })
-
+        const existingUser = await User.findOne({ email })
         if (existingUser)
             return res.status(400).json({ message: "User already exited." })
 
