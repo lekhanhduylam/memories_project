@@ -7,7 +7,7 @@ import Posts from '../Posts/Posts';
 import useStyle from './style';
 
 function Home() {
-  const [currentId, setCurrentId] = useState(null);
+  const [currentId, setCurrentId] = useState();
   const classes = useStyle();
   const dispatch = useDispatch();
 

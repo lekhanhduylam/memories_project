@@ -1,22 +1,31 @@
 import React, { useState, useEffect } from 'react'
 import { Paper, Typography, TextField, Button } from '@material-ui/core'
 import useStyle from './style'
-import FileBase from 'react-file-base64'
+// import FileBase from 'react-file-base64'
 import { useDispatch, useSelector } from 'react-redux'
 import { createPost, updatePost } from '../../actions/posts'
 
-
-const Form = ({ currentId, setCurrentId }) => {
+interface FormProps {
+  currentId?: string;
+  setCurrentId: any;
+}
+const Form = ({ currentId, setCurrentId }: FormProps) => {
     const [postData, setPostData] = useState({
       title: '',
       message: '',
       tags: '',
       selectedFile: '',
     });
-    const currentPost = useSelector((state) => currentId ? state.posts.find(p => p._id === currentId) : null)
+    const currentPost = useSelector((state: any) => currentId ? state.posts.find((p: any) => p._id === currentId) : null)
     const classes = useStyle()
     const dispatch = useDispatch()
-    const user = JSON.parse(localStorage.getItem('profile'));
+
+    const getLocalStorageUser = () => {
+      return localStorage.getItem('profile')
+        ? JSON.parse(localStorage.getItem('profile') || '')
+        : null;
+    }
+    const user = getLocalStorageUser();
 
     useEffect(() => {
         if (currentPost) {
@@ -25,7 +34,7 @@ const Form = ({ currentId, setCurrentId }) => {
     }, [currentPost])
 
 
-    const handleOnSubmit = (e) => {
+    const handleOnSubmit = (e: any) => {
         e.preventDefault()
 
         if (currentId) {
@@ -88,7 +97,7 @@ const Form = ({ currentId, setCurrentId }) => {
               setPostData({ ...postData, message: e.target.value })
             }
           />
-          <TextField
+          {/* <TextField
             fullWidth
             variant="outlined"
             label="Tags"
@@ -96,15 +105,15 @@ const Form = ({ currentId, setCurrentId }) => {
             onChange={(e) =>
               setPostData({ ...postData, tags: e.target.value.split(',') })
             }
-          />
+          /> */}
           <div className={classes.fileInput}>
-            <FileBase
+            {/* <FileBase
               type="file"
               multipleFile={false}
               onDone={({ base64 }) =>
                 setPostData({ ...postData, selectedFile: base64 })
               }
-            ></FileBase>
+            ></FileBase> */}
           </div>
           <Button
             className={classes.buttonSubmit}

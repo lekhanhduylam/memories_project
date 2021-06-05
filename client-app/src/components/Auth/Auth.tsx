@@ -1,14 +1,14 @@
-import { Avatar, Button, Container, Grid, Paper, TextField, Typography } from '@material-ui/core'
-import React, { useState } from 'react'
-import useStyle from './style'
+import { Avatar, Button, Container, Grid, Paper, Typography } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Input from './Input'
+import React, { useState } from 'react'
 import { GoogleLogin } from 'react-google-login'
-import Icon from './Icon'
 import { useDispatch } from 'react-redux'
-import { AUTH, LOGOUT } from '../../constants/actionTypes'
 import { useHistory } from 'react-router-dom'
-import { signup, signin } from '../../actions/auth'
+import { signin, signup } from '../../actions/auth'
+import { AUTH } from '../../constants/actionTypes'
+import Icon from './Icon'
+import Input from './Input'
+import useStyle from './style'
 
 const initialFormState = {
     firstName: '',
@@ -21,23 +21,23 @@ const initialFormState = {
 const Auth = () => {
 
     const [isShowPassword, setIsShowPassword] = useState(false)
-    const [isSignup, setIsSignup] = useState(false)
+    const [isSignUp, setIsSignUp] = useState(false)
     const [formData, setFormData] = useState(initialFormState)
 
     const classes = useStyle()
     const dispatch = useDispatch()
     const history = useHistory()
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault()
-        if (isSignup) {
+        if (isSignUp) {
             dispatch(signup(formData, history))
         } else {
             dispatch(signin(formData, history))
         }
     }
 
-    const handleChange = (e) => {
+    const handleChange = (e: any) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
@@ -46,10 +46,10 @@ const Auth = () => {
     }
 
     const switchMode = () => {
-        setIsSignup((prevValue) => !prevValue)
+        setIsSignUp((prevValue) => !prevValue)
     }
 
-    const googleSuccess = async (res) => {
+    const googleSuccess = async (res: any) => {
         const [result, token] = [res?.profileObj, res?.tokenId]
 
         try {
@@ -60,7 +60,7 @@ const Auth = () => {
         }
     }
 
-    const googleFailure = (error) => {
+    const googleFailure = (error: any) => {
         console.error(error)
         console.log('Google sign in failure')
     }
@@ -72,11 +72,11 @@ const Auth = () => {
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon />
                 </Avatar>
-                <Typography variant="h5">{isSignup ? 'Sign Up' : 'Sign In'}</Typography>
+                <Typography variant="h5">{isSignUp ? 'Sign Up' : 'Sign In'}</Typography>
                 <form className={classes.form} onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
                         {
-                            isSignup && (
+                            isSignUp && (
                                 <>
                                     <Input name="firstName" label="First name" handleChange={handleChange} half />
                                     <Input name="lastName" label="Last name" handleChange={handleChange} half />
@@ -86,10 +86,10 @@ const Auth = () => {
                         }
                         <Input name="email" type="email" label="Email" handleChange={handleChange} />
                         <Input name="password" type={isShowPassword ? "text" : "password"} label="Password" handleChange={handleChange} handleShowPassword={handleShowPassword} />
-                        {isSignup && <Input name="confirmPassword" handleChange={handleChange} type="password" label="Repeat password" />}
+                        {isSignUp && <Input name="confirmPassword" handleChange={handleChange} type="password" label="Repeat password" />}
                     </Grid>
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-                        {isSignup ? 'Sign Up' : 'Sign In'}
+                        {isSignUp ? 'Sign Up' : 'Sign In'}
                     </Button>
                     <GoogleLogin
                         clientId="638976598050-6g0kssomfsfttm3gfioaaf37a1gfco0o.apps.googleusercontent.com"
@@ -111,7 +111,7 @@ const Auth = () => {
                     <Grid container justify="flex-end">
                         <Grid item>
                             <Button onClick={switchMode}>
-                                {isSignup ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
+                                {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
                             </Button>
                         </Grid>
                     </Grid>

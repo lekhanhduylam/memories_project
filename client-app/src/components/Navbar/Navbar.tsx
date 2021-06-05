@@ -14,7 +14,13 @@ const Navbar = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+  const getLocalStorageUser = () => {
+    return localStorage.getItem('profile')
+      ? JSON.parse(localStorage.getItem('profile') || '')
+      : null;
+  }
+
+  const [user, setUser] = useState(getLocalStorageUser())
 
   const logout = () => {
     dispatch({ type: LOGOUT, data: null });
@@ -25,12 +31,14 @@ const Navbar = () => {
     const token = user?.token;
 
     if (token) {
-      const decodedToken = decode(token);
-      if (decodedToken.exp * 1000 < new Date().getTime()) logout();
+      const decodedToken: any = decode(token);
+      if (decodedToken && decodedToken.exp * 1000 < new Date().getTime()) logout();
     }
 
-    setUser(JSON.parse(localStorage.getItem('profile')));
+    setUser(getLocalStorageUser());
   }, [location, user?.token]);
+
+
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
@@ -62,7 +70,6 @@ const Navbar = () => {
             </Typography>
             <Button
               variant="contained"
-              className={classes.logout}
               color="secondary"
               onClick={logout}
             >
