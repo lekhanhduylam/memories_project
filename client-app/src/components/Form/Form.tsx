@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Paper, Typography, TextField, Button } from '@material-ui/core'
 import useStyle from './style'
 // import FileBase from 'react-file-base64'

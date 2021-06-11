@@ -1,8 +1,6 @@
 import { Grid, IconButton, InputAdornment, TextField } from '@material-ui/core'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff'
-import React from 'react'
-
 interface CustomInputProps {
     half?: boolean;
     name: string;

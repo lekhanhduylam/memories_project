@@ -1,18 +1,19 @@
 import { Container, Grid, Grow } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { getPosts } from '../../actions/posts';
+import { useEffect, useState } from 'react';
+import { useAppDispatch } from "../../hooks/hooks";
 import Form from '../Form/Form';
 import Posts from '../Posts/Posts';
 import useStyle from './style';
+import {fetchPosts} from '../../store/thunks/postsThunks'
 
 function Home() {
   const [currentId, setCurrentId] = useState();
   const classes = useStyle();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getPosts());
+    dispatch(fetchPosts());
+
   }, [currentId, dispatch]);
 
   return (
