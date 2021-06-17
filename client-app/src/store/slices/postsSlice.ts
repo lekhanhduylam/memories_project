@@ -1,6 +1,6 @@
-import { createSlice, createAction } from "@reduxjs/toolkit";
-import type { RootState } from "../store";
-import { fetchPosts } from "../thunks/postsThunks";
+import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import * as api from '../../api';
+// import type { RootState } from "../store";
 
 export const fetchAllPost = createAction("posts/fetchAllPost");
 
@@ -21,6 +21,12 @@ const initialState: PostsState = {
   status: 'idle'
 };
 
+export const fetchPosts = createAsyncThunk("posts/fetchAllPost", async () => {
+  const { data } = await api.fetchPosts();
+  const posts = data as Post[];
+  return posts;
+});
+
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
@@ -39,6 +45,6 @@ export const postsSlice = createSlice({
   },
 });
 
-export const selectPost = (state: RootState) => state.posts;
+// export const selectPost = (state: RootState) => state.posts;
 
 export default postsSlice.reducer;

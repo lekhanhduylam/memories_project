@@ -1,10 +1,10 @@
 import { Container, Grid, Grow } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from "../../hooks/hooks";
+import { fetchPosts } from '../../store/slices/postsSlice';
 import Form from '../Form/Form';
 import Posts from '../Posts/Posts';
 import useStyle from './style';
-import {fetchPosts} from '../../store/thunks/postsThunks'
 
 function Home() {
   const [currentId, setCurrentId] = useState();
