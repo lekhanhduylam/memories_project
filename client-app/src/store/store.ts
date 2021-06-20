@@ -1,14 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../reducers/auth";
 import postsReducer from "./slices/postsSlice";
-// ...
+import createSagaMiddleware from "redux-saga";
+import rootSaga from "../rootSaga";
+
+const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     posts: postsReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(sagaMiddleware),
 });
+sagaMiddleware.run(rootSaga);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
