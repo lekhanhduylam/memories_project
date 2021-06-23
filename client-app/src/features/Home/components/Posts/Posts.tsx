@@ -1,6 +1,6 @@
 import { CircularProgress, Grid } from '@material-ui/core';
-import { useAppSelector } from '../../hooks/hooks';
-import Post from './Post/Post';
+import { useAppSelector } from '../../../../app/hooks';
+import Post from '../Post/Post';
 import useStyle from './style';
 
 interface PostsProps {

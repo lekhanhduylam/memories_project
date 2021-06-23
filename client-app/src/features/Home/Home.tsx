@@ -1,9 +1,9 @@
 import { Container, Grid, Grow } from '@material-ui/core';
 import { useEffect, useState } from 'react';
-import { useAppDispatch } from "../../hooks/hooks";
-import { fetchPosts } from '../../store/slices/postsSlice';
+import { useAppDispatch } from '../../app/hooks';
+import { fetchPosts } from '../../features/Home/components/Posts/postsSlice';
 import Form from '../Form/Form';
-import Posts from '../Posts/Posts';
+import Posts from './components/Posts/Posts';
 import useStyle from './style';
 
 function Home() {
@@ -13,7 +13,6 @@ function Home() {
 
   useEffect(() => {
     dispatch(fetchPosts());
-
   }, [currentId, dispatch]);
 
   return (
