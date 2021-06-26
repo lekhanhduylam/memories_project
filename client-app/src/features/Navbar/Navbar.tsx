@@ -1,29 +1,28 @@
-import { useEffect, useState } from 'react';
 import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core';
-import useStyles from './style';
-import memories from '../../images/memories.png';
-import { Link } from 'react-router-dom';
-import { useLocation, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { LOGOUT } from '../../constants/actionTypes';
+import { useAppDispatch } from 'app/hooks';
 import { decode } from 'jsonwebtoken';
+import { useEffect, useState } from 'react';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import memories from '../../images/memories.png';
+import { logOut } from '../Auth/authSlice';
+import useStyles from './style';
 
 const Navbar = () => {
   const classes = useStyles();
   const location = useLocation();
   const history = useHistory();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const getLocalStorageUser = () => {
     return localStorage.getItem('profile')
       ? JSON.parse(localStorage.getItem('profile') || '')
       : null;
-  }
+  };
 
-  const [user, setUser] = useState(getLocalStorageUser())
+  const [user, setUser] = useState(getLocalStorageUser());
 
   const logout = () => {
-    dispatch({ type: LOGOUT, data: null });
+    dispatch(logOut());
     history.push('/');
   };
 
@@ -32,13 +31,12 @@ const Navbar = () => {
 
     if (token) {
       const decodedToken: any = decode(token);
-      if (decodedToken && decodedToken.exp * 1000 < new Date().getTime()) logout();
+      if (decodedToken && decodedToken.exp * 1000 < new Date().getTime())
+        logout();
     }
 
     setUser(getLocalStorageUser());
   }, [location, user?.token]);
-
-
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
@@ -68,11 +66,7 @@ const Navbar = () => {
             <Typography className={classes.userName} variant="h6">
               {user.result.name}
             </Typography>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={logout}
-            >
+            <Button variant="contained" color="secondary" onClick={logout}>
               Logout
             </Button>
           </div>

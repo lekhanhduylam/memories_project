@@ -13,7 +13,6 @@ import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 import moment from 'moment';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { deletePost, likePost } from '../../../../actions/posts';
 import useStyle from './style';
 
 interface PostProps {
@@ -106,7 +105,7 @@ const Post = (props: PostProps) => {
           color="primary"
           disabled={!user?.result}
           onClick={() => {
-            dispatch(likePost(props.post._id));
+            // dispatch(likePost(props.post._id));
           }}
         >
           <Like />
@@ -117,7 +116,7 @@ const Post = (props: PostProps) => {
             size="small"
             color="primary"
             onClick={() => {
-              dispatch(deletePost(props.post._id));
+              // dispatch(deletePost(props.post._id));
             }}
           >
             <DeleteIcon fontSize="small" />

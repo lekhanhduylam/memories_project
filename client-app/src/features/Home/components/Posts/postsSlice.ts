@@ -1,10 +1,9 @@
-import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { RootState } from 'app/store';
 import * as api from '../../../../api';
 // import type { RootState } from "../store";
 
-export const fetchAllPost = createAction('posts/fetchAllPost');
-
-export interface PostsState {
+interface PostsState {
   posts: Post[];
   status: 'idle' | 'loading' | 'failed';
 }
@@ -14,6 +13,8 @@ export interface Post {
   image: string;
   title: string;
   message: string;
+  tags: string;
+  selectedFile: string;
 }
 
 const initialState: PostsState = {
@@ -45,6 +46,6 @@ export const postsSlice = createSlice({
   },
 });
 
-// export const selectPost = (state: RootState) => state.posts;
+export const selectPost = (state: RootState) => state.posts;
 
 export default postsSlice.reducer;
