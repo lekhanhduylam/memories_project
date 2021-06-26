@@ -1,11 +1,43 @@
-import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core';
+import {
+  AppBar,
+  Avatar,
+  Button,
+  createStyles,
+  makeStyles,
+  Theme,
+  Toolbar,
+  Typography
+} from '@material-ui/core';
+import { orange } from '@material-ui/core/colors';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuIcon from '@material-ui/icons/Menu';
 import { useAppDispatch } from 'app/hooks';
 import { decode } from 'jsonwebtoken';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import memories from '../../images/memories.png';
 import { logOut } from '../Auth/authSlice';
-import useStyles from './style';
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+      root: {
+        flexGrow: 1,
+
+      },
+      menuButton: {
+        marginRight: theme.spacing(2),
+      },
+      title: {
+        flexGrow: 1,
+      },
+      avatar: {
+        backgroundColor: '#B381B3',
+        marginLeft: theme.spacing(1)
+
+      }
+    })
+  );
 
 const Navbar = () => {
   const classes = useStyles();
@@ -13,6 +45,7 @@ const Navbar = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const getLocalStorageUser = () => {
     return localStorage.getItem('profile')
       ? JSON.parse(localStorage.getItem('profile') || '')
@@ -21,8 +54,13 @@ const Navbar = () => {
 
   const [user, setUser] = useState(getLocalStorageUser());
 
+  const handleClickAvatar = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
   const logout = () => {
     dispatch(logOut());
+    closeUserMenu()
     history.push('/');
   };
 
@@ -38,50 +76,63 @@ const Navbar = () => {
     setUser(getLocalStorageUser());
   }, [location, user?.token]);
 
+  const renderLogInButton = () => {
+    if (!user || !user?.token) {
+      return (
+          <Button color="inherit" onClick={() => history.push('/auth')}>Login</Button>
+      )
+    }
+    return
+  }
+
+  const closeUserMenu = () => {
+    setAnchorEl(null)
+  }
+
+  const renderAvatar = () => {
+    if (user && user?.result) {
+      const {name, imageUrl} = user.result
+      return (
+        <>
+          <Typography variant="h6" >{name}</Typography>
+          <Avatar onClick={(event) => handleClickAvatar(event as React.MouseEvent<HTMLElement>)} aria-controls="user-menu" className={classes.avatar} alt={name} src={imageUrl} >{name.charAt(0).toUpperCase()}</Avatar>
+          <Menu
+        id="user-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={closeUserMenu}
+      >
+        <MenuItem onClick={closeUserMenu}>Profile</MenuItem>
+        <MenuItem onClick={closeUserMenu}>My account</MenuItem>
+        <MenuItem onClick={() => logout()}>Logout</MenuItem>
+      </Menu>
+        </>
+      )
+    }
+    return
+  }
+
   return (
-    <AppBar className={classes.appBar} position="static" color="inherit">
-      <div className={classes.brandContainer}>
-        <Typography
-          component={Link}
-          to="/"
-          className={classes.heading}
-          variant="h2"
-          align="center"
-        >
-          Memories
-        </Typography>
-        <img
-          className={classes.image}
-          src={memories}
-          alt="memories"
-          height="60"
-        ></img>
-      </div>
-      <Toolbar className={classes.toolbar}>
-        {user ? (
-          <div className={classes.profile}>
-            <Avatar className={classes.purple} alt={user.result.imageUrl}>
-              {user.result.name.charAt(0)}
-            </Avatar>
-            <Typography className={classes.userName} variant="h6">
-              {user.result.name}
-            </Typography>
-            <Button variant="contained" color="secondary" onClick={logout}>
-              Logout
-            </Button>
-          </div>
-        ) : (
-          <Button
-            component={Link}
-            to="/auth"
-            variant="contained"
-            color="primary"
+    <div className={classes.root}>
+      <AppBar position="absolute" color="inherit">
+        <Toolbar>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
           >
-            Sign in
-          </Button>
-        )}
-      </Toolbar>
-    </AppBar>
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" className={classes.title}>
+            LocknLock Mall
+          </Typography>
+          {renderLogInButton()}
+          {renderAvatar()}
+        </Toolbar>
+      </AppBar>
+    </div>
   );
 };
 

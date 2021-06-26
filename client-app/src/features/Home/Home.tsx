@@ -17,7 +17,7 @@ function Home() {
 
   return (
     <Grow in>
-      <Container>
+      <Container className={classes.home}>
         <Grid
           container
           className={classes.mainContainer}
