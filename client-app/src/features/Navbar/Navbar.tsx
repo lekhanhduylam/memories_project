@@ -2,13 +2,13 @@ import {
   AppBar,
   Avatar,
   Button,
+  Container,
   createStyles,
   makeStyles,
   Theme,
   Toolbar,
   Typography
 } from '@material-ui/core';
-import { orange } from '@material-ui/core/colors';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -16,28 +16,32 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { useAppDispatch } from 'app/hooks';
 import { decode } from 'jsonwebtoken';
 import React, { useEffect, useState } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import logo from '../../images/science.png';
 import { logOut } from '../Auth/authSlice';
 
 const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-      root: {
-        flexGrow: 1,
-
-      },
-      menuButton: {
-        marginRight: theme.spacing(2),
-      },
-      title: {
-        flexGrow: 1,
-      },
-      avatar: {
-        backgroundColor: '#B381B3',
-        marginLeft: theme.spacing(1)
-
-      }
-    })
-  );
+  createStyles({
+    root: {
+      flexGrow: 1,
+    },
+    menuButton: {
+      marginRight: theme.spacing(2),
+    },
+    title: {
+      flexGrow: 1,
+    },
+    avatar: {
+      backgroundColor: '#B381B3',
+      marginLeft: theme.spacing(1),
+    },
+    logo: {
+      width: theme.spacing(5),
+      height: theme.spacing(5),
+      padding: theme.spacing(1)
+    },
+  })
+);
 
 const Navbar = () => {
   const classes = useStyles();
@@ -60,7 +64,7 @@ const Navbar = () => {
 
   const logout = () => {
     dispatch(logOut());
-    closeUserMenu()
+    closeUserMenu();
     history.push('/');
   };
 
@@ -79,58 +83,65 @@ const Navbar = () => {
   const renderLogInButton = () => {
     if (!user || !user?.token) {
       return (
-          <Button color="inherit" onClick={() => history.push('/auth')}>Login</Button>
-      )
+        <Button color="inherit" onClick={() => history.push('/auth')}>
+          Login
+        </Button>
+      );
     }
-    return
-  }
+    return;
+  };
 
   const closeUserMenu = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
   const renderAvatar = () => {
     if (user && user?.result) {
-      const {name, imageUrl} = user.result
+      const { name, imageUrl } = user.result;
       return (
         <>
-          <Typography variant="h6" >{name}</Typography>
-          <Avatar onClick={(event) => handleClickAvatar(event as React.MouseEvent<HTMLElement>)} aria-controls="user-menu" className={classes.avatar} alt={name} src={imageUrl} >{name.charAt(0).toUpperCase()}</Avatar>
+          <Typography variant="h6">{name}</Typography>
+          <Avatar
+            onClick={(event) =>
+              handleClickAvatar(event as React.MouseEvent<HTMLElement>)
+            }
+            aria-controls="user-menu"
+            className={classes.avatar}
+            alt={name}
+            src={imageUrl}
+          >
+            {name.charAt(0).toUpperCase()}
+          </Avatar>
           <Menu
-        id="user-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={closeUserMenu}
-      >
-        <MenuItem onClick={closeUserMenu}>Profile</MenuItem>
-        <MenuItem onClick={closeUserMenu}>My account</MenuItem>
-        <MenuItem onClick={() => logout()}>Logout</MenuItem>
-      </Menu>
+            id="user-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={closeUserMenu}
+          >
+            <MenuItem onClick={closeUserMenu}>Profile</MenuItem>
+            <MenuItem onClick={closeUserMenu}>My account</MenuItem>
+            <MenuItem onClick={() => logout()}>Logout</MenuItem>
+          </Menu>
         </>
-      )
+      );
     }
-    return
-  }
+    return;
+  };
 
   return (
     <div className={classes.root}>
       <AppBar position="absolute" color="inherit">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            LocknLock Mall
-          </Typography>
-          {renderLogInButton()}
-          {renderAvatar()}
+        <Container>
+        <Toolbar disableGutters>
+            <Avatar alt="logo" src={logo} className={classes.logo}></Avatar>
+            <Typography variant="h6" className={classes.title}>
+              Tinhtuong
+            </Typography>
+            {renderLogInButton()}
+            {renderAvatar()}
         </Toolbar>
+        </Container>
       </AppBar>
     </div>
   );
