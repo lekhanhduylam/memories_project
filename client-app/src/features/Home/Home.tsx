@@ -1,14 +1,30 @@
-import { Container, Grid, Grow } from '@material-ui/core';
+import {
+  Container,
+  createStyles,
+  Grid,
+  Grow,
+  makeStyles,
+  Paper,
+  Theme
+} from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
+import PostHorizontal from '../../components/PostHorizontal';
 import { fetchPosts } from '../../features/Home/components/Posts/postsSlice';
 import Form from '../Form/Form';
 import Posts from './components/Posts/Posts';
-import useStyle from './style';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      marginTop: theme.spacing(10),
+    },
+  })
+);
 
 function Home() {
   const [currentId, setCurrentId] = useState();
-  const classes = useStyle();
+  const classes = useStyles();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -16,24 +32,17 @@ function Home() {
   }, [currentId, dispatch]);
 
   return (
-    <Grow in>
-      <Container className={classes.home}>
-        <Grid
-          container
-          className={classes.mainContainer}
-          justify="space-between"
-          alignItems="stretch"
-          spacing={4}
-        >
-          <Grid item xs={12} sm={7}>
-            <Posts setCurrentId={setCurrentId} />
-          </Grid>
-          <Grid item xs={12} sm={5}>
-            <Form currentId={currentId} setCurrentId={setCurrentId} />
-          </Grid>
-        </Grid>
-      </Container>
-    </Grow>
+    <Container className={classes.root}>
+    <Grid spacing={3} container>
+      <Grid item xs={8}>
+            <PostHorizontal></PostHorizontal>
+            <PostHorizontal></PostHorizontal>
+            <PostHorizontal></PostHorizontal>
+            <PostHorizontal></PostHorizontal>
+      </Grid>
+      <Grid item xs={4}></Grid>
+    </Grid>
+    </Container>
   );
 }
 

@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
+      boxShadow: '0 2px 4px 0 rgba(182, 182, 182, 50%)'
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     avatar: {
-      backgroundColor: '#B381B3',
+      backgroundColor: `${theme.palette.info.main}`,
       marginLeft: theme.spacing(1),
     },
     logo: {
@@ -130,8 +131,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className={classes.root}>
-      <AppBar position="absolute" color="inherit">
+      <AppBar position="absolute" className={classes.root} color="inherit">
         <Container>
         <Toolbar disableGutters>
             <Avatar alt="logo" src={logo} className={classes.logo}></Avatar>
@@ -143,7 +143,6 @@ const Navbar = () => {
         </Toolbar>
         </Container>
       </AppBar>
-    </div>
   );
 };
 
