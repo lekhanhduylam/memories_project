@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-function Home() {
+const Home = () => {
   const [currentId, setCurrentId] = useState();
   const classes = useStyles();
   const dispatch = useAppDispatch();

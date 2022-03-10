@@ -17,7 +17,7 @@ import { useAppDispatch } from 'app/hooks';
 import { decode } from 'jsonwebtoken';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import logo from '../../images/science.png';
+import logo from '../../images/science.jpg';
 import { logOut } from '../Auth/authSlice';
 
 const useStyles = makeStyles((theme: Theme) =>
